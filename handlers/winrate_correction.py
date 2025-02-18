@@ -57,12 +57,18 @@ def process_desired_winrate_step(message, bot, current_winrate, played_matches, 
         if desired_winrate < 0 or desired_winrate > 100:
             raise ValueError
         additional_matches = calculate_additional_matches(current_winrate, played_matches, expected_winrate, desired_winrate)
-        bot.reply_to(message, f"Вам нужно сыграть примерно {additional_matches} дополнительных матчей с винрейтом {expected_winrate}, чтобы достичь желаемого общего винрейта в {desired_winrate}%.")
+        if additional_matches == -1:
+            bot.reply_to(message, "Невозможно достичь желаемого винрейта с указанным ожидаемым винрейтом в дополнительных матчах. Желанный винрейт не может быть выше ожидаемого винрейта в дополнительных матчах.")
+        else:
+            bot.reply_to(message, f"Вам нужно сыграть примерно {additional_matches} дополнительных матчей с винрейтом {expected_winrate}, чтобы достичь желаемого общего винрейта в {desired_winrate}%.")
     except ValueError:
         msg = bot.reply_to(message, "Пожалуйста, введите число от 0 до 100.")
         bot.register_next_step_handler(msg, process_desired_winrate_step, bot, current_winrate, played_matches, expected_winrate)
 
 def calculate_additional_matches(current_winrate, played_matches, expected_winrate, desired_winrate):
+    if desired_winrate > expected_winrate:
+        return -1  # Возвращаем -1, если желаемый винрейт больше ожидаемого винрейта в дополнительных матчах
+
     current_wins = current_winrate / 100 * played_matches
     additional_matches = 0
     while True:
