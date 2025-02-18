@@ -15,3 +15,4 @@ def send_start(bot):
             "/help — Помощь\n\n"
         )
         bot.reply_to(message, start_text)
+    return send_start_message

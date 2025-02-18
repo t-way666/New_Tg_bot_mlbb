@@ -6,6 +6,7 @@ def send_winrate_correction(bot):
         winrate_text = "Введите ваш текущий винрейт:"
         msg = bot.reply_to(message, winrate_text)
         bot.register_next_step_handler(msg, process_current_winrate_step, bot)
+    return send_winrate_correction_message
 
 def process_current_winrate_step(message, bot):
     if message.text.startswith('/'):
@@ -73,17 +74,3 @@ def calculate_additional_matches(current_winrate, played_matches, expected_winra
         if additional_matches > 100000:  # Условие выхода для предотвращения бесконечного цикла
             return -1  # Возвращаем -1, если не удалось найти решение
     return additional_matches
-
-def handle_commands(message):
-    if message.text == '/start':
-        start.send_start(bot)(message)
-    elif message.text == '/help':
-        help.send_help(bot)(message)
-    elif message.text == '/winrate_correction':
-        winrate_correction.send_winrate_correction(bot)(message)
-    elif message.text == '/season_progress':
-        season_progress.send_season_progress(bot)(message)
-    elif message.text == '/rank':
-        rank.send_rank(bot)(message)
-    elif message.text == '/my_stars':
-        my_stars.send_my_stars(bot)(message)
