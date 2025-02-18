@@ -9,9 +9,10 @@ class TestWinrateCorrection(unittest.TestCase):
 
     def test_calculate_additional_matches(self):
         self.assertEqual(calculate_additional_matches(55, 70, 60, 70), 18)
+        self.assertEqual(calculate_additional_matches(55, 3900, 80, 75), 25)
 
-    @patch('handlers.winrate_correction.bot.reply_to')
-    @patch('handlers.winrate_correction.bot.register_next_step_handler')
+    @patch('telebot.TeleBot.reply_to', new_callable=MagicMock)
+    @patch('telebot.TeleBot.register_next_step_handler', new_callable=MagicMock)
     def test_send_winrate_correction(self, mock_register_next_step_handler, mock_reply_to):
         message = MagicMock()
         message.text = "55"
@@ -44,7 +45,7 @@ class TestWinrateCorrection(unittest.TestCase):
         message.text = "70"
         handler = mock_register_next_step_handler.call_args[0][1]
         handler(message, self.bot, 55.0, 70, 60.0)
-        mock_reply_to.assert_called_with(message, "Вам нужно сыграть примерно 18 дополнительных матчей, чтобы достичь желаемого винрейта.")
+        mock_reply_to.assert_called_with(message, "Вам нужно сыграть примерно 25 дополнительных матчей, чтобы достичь желаемого винрейта.")
 
 if __name__ == '__main__':
     unittest.main()
