@@ -1,6 +1,6 @@
-from handlers import start, help, winrate_correction, season_progress, rank, my_stars
-
 def handle_commands(bot, message):
+    from handlers import start, help, winrate_correction, season_progress, rank, my_stars, armor_and_resistance
+    
     if message.text == '/start':
         start.send_start(bot)(message)
     elif message.text == '/help':
@@ -13,3 +13,5 @@ def handle_commands(bot, message):
         rank.send_rank(bot)(message)
     elif message.text == '/my_stars':
         my_stars.send_my_stars(bot)(message)
+    elif message.text == '/armor_and_resistance':
+        armor_and_resistance.armor_calculator(message, bot)  # Обновлено
