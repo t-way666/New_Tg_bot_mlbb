@@ -3,3 +3,4 @@ def send_rank(bot):
     def send_rank_message(message):
         rank_text = "Это команда для определения ранга."
         bot.reply_to(message, rank_text)
+    return send_rank_message
