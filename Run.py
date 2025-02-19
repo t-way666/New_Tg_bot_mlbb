@@ -1,7 +1,7 @@
 import logging
 import telebot
 from config import API_TOKEN
-from handlers import start, help, winrate_correction, season_progress, rank, my_stars
+from handlers import start, help, winrate_correction, season_progress, rank, my_stars, armor_and_resistance
 from handlers.command_handler import handle_commands
 
 # Configure logging
@@ -17,8 +17,9 @@ winrate_correction.send_winrate_correction(bot)
 season_progress.send_season_progress(bot)
 rank.send_rank(bot)
 my_stars.send_my_stars(bot)
+armor_and_resistance.register_handlers(bot)  # Добавляем эту строку
 
-@bot.message_handler(commands=['start', 'help', 'winrate_correction', 'season_progress', 'rank', 'my_stars'])
+@bot.message_handler(commands=['start', 'help', 'winrate_correction', 'season_progress', 'rank', 'my_stars', 'armor_and_resistance'])
 def handle_commands_wrapper(message):
     handle_commands(bot, message)
 

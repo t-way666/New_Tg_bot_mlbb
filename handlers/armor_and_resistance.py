@@ -1,8 +1,5 @@
-import time
 from telebot import types
 import math
-from handlers.command_handler import handle_commands  # добавлен импорт
-
 def calculate_damage_resistance(armor):
     """Рассчитывает снижение урона по значению защиты"""
     return (armor / (armor + 119)) * 100
@@ -15,27 +12,13 @@ def calculate_armor_needed(resistance):
 
 def armor_calculator(message, bot):
     """Функция-обработчик команды /armor_and_resistance"""
-# Сначала удаляем старую клавиатуру
-    bot.send_message(
-        message.chat.id,
-        "Подготовка калькулятора...",
-        reply_markup=types.ReplyKeyboardRemove()
-    )
-
-    # Сначала удаляем старую клавиатуру
-    bot.send_message(
-        message.chat.id,
-        "Подготовка калькулятора...",
-        reply_markup=types.ReplyKeyboardRemove()
-    )
-
     # Создаем разметку для inline-кнопок
     markup = types.InlineKeyboardMarkup(row_width=2)
     btn1 = types.InlineKeyboardButton("1. Защита", callback_data="calc_armor")
     btn2 = types.InlineKeyboardButton("2. Снижение урона", callback_data="calc_resistance")
     markup.add(btn1, btn2)
     
-    # Отправляем новое сообщение с inline-кнопками
+    # Отправляем сообщение с inline-кнопками
     bot.send_message(
         message.chat.id,
         "Что мы хотим рассчитать?\n\n"
@@ -55,7 +38,7 @@ def register_handlers(bot):
                 "Введите желаемый процент снижения урона (от 0 до 99.99):"
             )
             bot.register_next_step_handler(msg, lambda m: calculate_armor(m, bot))
-        elif call.data == "calc_resistanse":
+        elif call.data == "calc_resistance":
             msg = bot.send_message(
                 call.message.chat.id,
                 "Введите количество защиты:"
@@ -86,9 +69,9 @@ def calculate_armor(message, bot):
         if resistance > 90:
             response += "\n\nОбратите внимание: такое количество защиты труднодостижимо в реальной игре!"
         
-        animate_text(bot, message.chat.id, response)
+        bot.send_message(message.chat.id, response, parse_mode='HTML')
     except ValueError as e:
-        animate_text(bot, message.chat.id, f"Ошибка: {str(e)}")
+        bot.send_message(message.chat.id, f"Ошибка: {str(e)}")
 
 def calculate_resistance(message, bot):
     """Расчет снижения урона"""
@@ -101,7 +84,7 @@ def calculate_resistance(message, bot):
         
         response = (
             f"При {armor:.2f} защиты вы получите "
-            f"{resistance:.2f}% снижения урона.\n\n"
+            f"{resistance:.2f}% снижения урона.\n\n\n"
             f"Формула расчета:\n"
             f"X = (Y ÷ (Y + 119)) × 100, где:\n"
             f"Y - количество защиты\n"
@@ -110,37 +93,6 @@ def calculate_resistance(message, bot):
             f"X = ({armor:.2f} ÷ ({armor:.2f} + 119)) × 100 = {resistance:.2f}%"
         )
         
-        animate_text(bot, message.chat.id, response)
+        bot.send_message(message.chat.id, response, parse_mode='HTML')
     except ValueError as e:
-        animate_text(bot, message.chat.id, f"Ошибка: {str(e)}")
-
-def animate_text(bot, chat_id, text):
-    """Анимация печати текста"""
-    msg = bot.send_message(chat_id, "...")
-    current_text = ""
-    
-    # Разбиваем текст на части
-    chunks = []
-    current_chunk = ""
-    for word in text.split():
-        if len(current_chunk) + len(word) + 1 <= 4096:  # Telegram limit
-            current_chunk += (word + " ")
-        else:
-            chunks.append(current_chunk.strip())
-            current_chunk = word + " "
-    if current_chunk:
-        chunks.append(current_chunk.strip())
-    
-    # Анимируем текст по словам
-    for chunk in chunks:
-        try:
-            bot.edit_message_text(
-                chat_id=chat_id,
-                message_id=msg.message_id,
-                text=chunk,
-                parse_mode='HTML'  # Добавляем поддержку HTML-форматирования
-            )
-            time.sleep(0.1)  # Увеличиваем задержку для более плавной анимации
-        except Exception as e:
-            if "message is not modified" not in str(e):
-                print(f"Error: {e}")
+        bot.send_message(message.chat.id, f"Ошибка: {str(e)}")

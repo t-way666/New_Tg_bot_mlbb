@@ -62,12 +62,13 @@ def send_start(bot):
                 if not send_media(bot, message.chat.id, media_path):
                     logger.warning("Не удалось отправить медиафайл")
 
-            # Приветственное сообщение
+            # Приветственное сообщение и команды
             greeting = (
                 f"Привет, {user_first_name}\n"
                 "Добро пожаловать в нашего телеграм бота.\n"
                 "Вот команды, которые я понимаю:\n\n"
             )
+            
             commands = [
                 "/start — Начать или перезапустить бота",
                 "/armor_and_resistance — Калькулятор защиты и снижения урона",
@@ -78,23 +79,9 @@ def send_start(bot):
                 "/winrate_correction — Корректировка винрейта"
             ]
 
-            # Отправляем и анимируем сообщение
-            msg = bot.send_message(message.chat.id, greeting)
-            current_text = greeting
-
-            for cmd in sorted(commands):
-                if not cmd.startswith('/start'):
-                    current_text += cmd + "\n\n"
-                    try:
-                        bot.edit_message_text(
-                            chat_id=message.chat.id,
-                            message_id=msg.message_id,
-                            text=current_text
-                        )
-                        time.sleep(0.2)
-                    except Exception as e:
-                        if "message is not modified" not in str(e):
-                            logger.error(f"Ошибка при обновлении сообщения: {e}")
+            # Отправляем сообщение сразу целиком
+            full_message = greeting + "\n".join(sorted(commands))
+            bot.send_message(message.chat.id, full_message)
 
         except Exception as e:
             logger.error(f"Общая ошибка в команде start: {e}")
