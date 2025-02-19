@@ -2,7 +2,7 @@ import logging
 import telebot
 import time
 from requests.exceptions import ConnectionError, ReadTimeout
-from config.settings import API_TOKEN  # Изменен импорт на прямой путь
+from config.settings import API_TOKEN
 from handlers import (
     start,
     help,
@@ -24,24 +24,27 @@ logger = logging.getLogger(__name__)
 # Инициализация бота
 bot = telebot.TeleBot(API_TOKEN)
 
-# Регистрация всех обработчиков
-HANDLERS = [
-    start.send_start,
-    help.send_help,
-    winrate_correction.send_winrate_correction,
-    season_progress.send_season_progress,
-    rank.send_rank,
-    my_stars.send_my_stars,
-    armor_and_resistance.register_handlers
-]
+# Словарь соответствия команд и обработчиков
+command_mapping = {
+    'start': start.send_start,
+    'help': help.send_help,
+    'winrate_correction': winrate_correction.send_winrate_correction,
+    'season_progress': season_progress.send_season_progress,
+    'rank': rank.send_rank, 
+    'my_stars': my_stars.send_my_stars,
+}
 
-# Регистрируем все обработчики
-for handler in HANDLERS:
-    handler(bot)
+# Регистрируем общий обработчик команд
+@bot.message_handler(commands=list(command_mapping.keys()))
+def handle_specific_commands(message):
+    """Обработчик для специфических команд"""
+    command = message.text.split()[0][1:].lower()  # Убираем / и приводим к нижнему регистру
+    if command in command_mapping:
+        handler = command_mapping[command]
+        handler(bot)(message)
 
-@bot.message_handler(commands=['start', 'help', 'winrate_correction', 'season_progress', 'rank', 'my_stars', 'armor_and_resistance'])
-def handle_commands_wrapper(message):
-    handle_commands(bot, message)
+# Регистрируем armor_and_resistance отдельно, так как он работает по-другому
+armor_and_resistance.register_handlers(bot)
 
 @bot.message_handler(func=lambda message: message.text.startswith('/'))
 def prioritize_commands(message):

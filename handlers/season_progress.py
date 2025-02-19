@@ -138,6 +138,33 @@ def send_season_progress(bot):
             logger.error(f"Ошибка при обработке 'не помню': {e}")
             bot.answer_callback_query(call.id, "Произошла ошибка. Попробуйте снова.")
 
+    @bot.callback_query_handler(func=lambda call: call.data.startswith("level::"))
+    def handle_level_selection(call):
+        try:
+            chat_id = call.message.chat.id
+            level = call.data.split("::")[1]
+            step = user_data[chat_id].get('current_step', 'start')  # start или current
+            
+            if level == "dont_remember":
+                user_data[chat_id][f'{step}_level'] = 1
+                user_data[chat_id][f'{step}_stars'] = 0
+                if step == 'start':
+                    bot.send_message(chat_id, "Сколько матчей вы уже сыграли в этом сезоне?")
+                    bot.register_next_step_handler(call.message, process_games_played)
+                else:
+                    show_rank_keyboard(chat_id, "target_rank")
+            else:
+                user_data[chat_id][f'{step}_level'] = int(level)
+                rank_name = user_data[chat_id][f'{step}_rank']
+                show_stars_keyboard(chat_id, rank_name, level)
+            
+            bot.answer_callback_query(call.id)
+            bot.delete_message(chat_id, call.message.message_id)
+            
+        except Exception as e:
+            logger.error(f"Ошибка при обработке выбора уровня: {e}")
+            bot.answer_callback_query(call.id, "Произошла ошибка. Попробуйте снова.")
+
     def process_games_played(message):
         try:
             games = int(message.text)
@@ -225,79 +252,70 @@ def send_season_progress(bot):
             chat_id = message.chat.id
             user_data[chat_id]['target_winrate'] = target_wr
             
-            # Формируем итоговое сообщение
-            result = (
-                "🎮 Итак. Учитывая введенные значения (надеюсь вы не сливались, хаха), вы:\n\n"
-                f"📈 Начинали сезон с {user_data[chat_id]['start_rank']}"
-                f" (уровень {user_data[chat_id].get('start_level', '0')}, "
-                f"звезд: {user_data[chat_id].get('start_stars', '0')})\n"
-                f"🎯 Сыграли {user_data[chat_id]['games_played']} матчей "
-                f"с винрейтом {user_data[chat_id]['winrate']}%\n"
-                f"🏆 Сейчас вы достигли {user_data[chat_id]['current_rank']}"
-            )
-            
-            # Добавляем информацию о текущем уровне/звездах
-            if 'current_level' in user_data[chat_id]:
-                result += f" (уровень {user_data[chat_id]['current_level']})"
-            if 'current_stars' in user_data[chat_id]:
-                result += f" ({user_data[chat_id]['current_stars']} звезд)"
-            
             # Рассчитываем необходимое количество матчей
-            # Здесь должна быть ваша логика расчета
             needed_games = calculate_needed_games(user_data[chat_id])
             
-            result += (
-                f"\n\n✨ Чтобы достичь желаемого винрейта {target_wr}%, "
-                f"вам нужно сыграть примерно {needed_games} матчей "
-                f"с винрейтом {user_data[chat_id]['expected_winrate']}%\n\n"
-                "🍀 Надеюсь, вы достигните своей цели! Желаю вам хороших игр и тиммейтов! 🌟"
-            )
+            # Формируем итоговое сообщение
+            result = format_final_message(user_data[chat_id], needed_games)
             
             bot.send_message(chat_id, result)
             
+            # Очищаем данные пользователя после завершения
+            if chat_id in user_data:
+                del user_data[chat_id]
+                
         except ValueError:
             msg = bot.reply_to(message, "Пожалуйста, введите число от 0 до 100")
             bot.register_next_step_handler(msg, process_target_winrate)
 
+    def format_final_message(user_data, needed_games):
+        current_info = f"уровень {user_data.get('current_level', '1')}" if 'current_level' in user_data else ""
+        target_info = f"уровень {user_data.get('target_level', '1')}" if 'target_level' in user_data else ""
+        
+        return (
+            "🎮 Итак. Учитывая введенные значения:\n\n"
+            f"📈 Начинали сезон с {user_data.get('start_rank', 'Неизвестно')}\n"
+            f"🎯 Сыграли {user_data['games_played']} матчей с винрейтом {user_data['winrate']}%\n"
+            f"🏆 Сейчас вы на {user_data['current_rank']} {current_info}\n"
+            f"✨ Цель: {user_data.get('target_rank', '???')} {target_info}\n\n"
+            f"Чтобы достичь желаемого ранга, вам нужно сыграть примерно {needed_games} матчей "
+            f"с текущим винрейтом {user_data['winrate']}%\n\n"
+            "🍀 Удачи в достижении цели! 🌟"
+        )
+
     def calculate_needed_games(user_data):
         """
-        Рассчитывает необходимое количество игр для достижения целевого винрейта
-        
-        Args:
-            user_data (dict): Словарь с данными пользователя
-            Содержит:
-            - games_played: количество сыгранных игр
-            - winrate: текущий винрейт
-            - expected_winrate: ожидаемый винрейт в будущих играх
-            - target_winrate: целевой винрейт
-        
-        Returns:
-            int: Количество необходимых игр
+        Рассчитывает необходимое количество матчей для достижения целевого ранга
         """
         try:
-            current_games = user_data['games_played']
-            current_wr = user_data['winrate']
-            expected_wr = user_data['expected_winrate']
-            target_wr = user_data['target_winrate']
+            current_stars = user_data.get('current_stars', 0)
+            target_stars = user_data.get('target_stars', 0)
+            winrate = user_data.get('winrate', 50) / 100  # переводим в десятичную дробь
             
-            # Текущее количество побед
-            current_wins = (current_games * current_wr) / 100
+            if current_stars >= target_stars:
+                return 0
+                
+            stars_needed = target_stars - current_stars
             
-            # Формула для расчета необходимых игр:
-            # (target_wr * (current_games + x) = (current_wins + expected_wr * x)
-            # Где x - количество необходимых игр
+            # В среднем за победу +1 звезда, за поражение -1 звезда
+            # При винрейте 50% игрок стоит на месте
+            # Формула: stars_needed = games * (winrate * 1 + (1-winrate) * (-1))
+            # Упрощаем: stars_needed = games * (2 * winrate - 1)
             
-            if expected_wr == target_wr:
-                return "∞" if current_wr != target_wr else "0"
+            if winrate <= 0.5:
+                return "невозможно (винрейт слишком низкий)"
+                
+            avg_stars_per_game = (2 * winrate - 1)  # среднее количество звезд за игру
             
-            needed_games = (
-                (target_wr * current_games - 100 * current_wins) / 
-                (expected_wr - target_wr)
-            )
+            if avg_stars_per_game <= 0:
+                return "невозможно с текущим винрейтом"
+                
+            games_needed = int(stars_needed / avg_stars_per_game) + 1
             
-            return max(0, round(needed_games))
-            
-        except (KeyError, ZeroDivisionError):
-            return "N/A"  # В случае ошибки или отсутствия данных
+            return games_needed
+
+        except Exception as e:
+            logger.error(f"Ошибка при расчете необходимых игр: {e}")
+            return "неопределенное количество"
 
     return start_season_progress
