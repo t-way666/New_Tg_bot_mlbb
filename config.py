@@ -8,4 +8,4 @@ load_dotenv()
 API_TOKEN = os.getenv('API_TOKEN')
 
 if not API_TOKEN:
-    raise ValueError("Не найден API_TOKEN в переменных окружения")
+    raise ValueError("API_TOKEN не найден в переменных окружения. Создайте файл .env и добавьте API_TOKEN=ваш_токен")
