@@ -1,0 +1,23 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+config.py
+
+# IDE
+.idea/
+.vscode/
+
+# Media files
+media/start_gifs/*
+!media/start_gifs/.gitkeep
+
+# Logs
+*.log
