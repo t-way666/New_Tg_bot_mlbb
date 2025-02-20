@@ -1,3 +1,8 @@
+import logging  # Добавляем импорт logging
+
+# Настраиваем логирование
+logger = logging.getLogger(__name__)
+
 def send_menu(bot):
     @bot.message_handler(commands=['menu'])
     def send_menu_message(message):
@@ -10,27 +15,28 @@ def send_menu(bot):
                 "/menu\n"
                 "Меню доступных команд бота\n"
                 "/rank\n"
-                 "Определить ранг по звездам\n"
+                "Определить ранг по звездам\n"
                 "/my_stars\n"
-                 "Подсчет общего количества звезд\n"
+                "Подсчет общего количества звезд\n"
                 "/winrate_correction\n"
-                 "Корректировка винрейта\n"
+                "Корректировка винрейта\n"
                 "/season_progress\n"
-                 "Сколько игр нужно сыграть для достижения желаемого ранга\n"
+                "Сколько игр нужно сыграть для достижения желаемого ранга\n"
                 "/armor_and_resistance\n"
-                 "Калькулятор защиты и снижения урона\n\n"
+                "Калькулятор защиты и снижения урона\n"
+                "/hero_chars\n"
+                "Информация о героях\n\n"
                 
-                " Команды которые в разработке(пока не работают):\n"
-                " /help\n"
-                " /support\n"
-                " /guide\n"
-                " /cybersport_info\n"
-                " /chars_table\n"
-                " /hero_chars\n"
-                " /hero_greed\n"
-                " /hero_tiers\n"
-                " /search_teammates\n"
-                " /img_creator\n"
+                "Команды которые в разработке(пока не работают):\n"
+                "/help\n"
+                "/support\n"
+                "/guide\n"
+                "/cybersport_info\n"
+                "/chars_table\n"
+                "/hero_greed\n"
+                "/hero_tiers\n"
+                "/search_teammates\n"
+                "/img_creator\n"
             )
 
             bot.send_message(

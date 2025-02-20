@@ -1,6 +1,6 @@
 from typing import Dict, Callable
 import logging
-from handlers import armor_and_resistance
+from handlers import armor_and_resistance, hero_chars
 
 logger = logging.getLogger(__name__)
 
@@ -29,14 +29,16 @@ def handle_commands(bot, message):
                 "/season_progress\n"
                 "Сколько игр нужно сыграть для достижения желаемого ранга\n"
                 "/armor_and_resistance\n"
-                "Калькулятор защиты и снижения урона\n\n"
+                "Калькулятор защиты и снижения урона\n"
+                "/hero\n"
+                "Информация о героях\n\n"
+                
                 "Команды которые в разработке(пока не работают):\n"
                 "/help\n"
                 "/support\n"
                 "/guide\n"
                 "/cybersport_info\n"
                 "/chars_table\n"
-                "/hero_chars\n"
                 "/hero_greed\n"
                 "/hero_tiers\n"
                 "/search_teammates\n"
@@ -47,7 +49,8 @@ def handle_commands(bot, message):
             '/my_stars': lambda m: bot.send_message(m.chat.id, "Используйте /start для списка команд"),
             '/winrate_correction': lambda m: bot.send_message(m.chat.id, "Используйте /start для списка команд"),
             '/season_progress': lambda m: bot.send_message(m.chat.id, "Используйте /start для списка команд"),
-            '/armor_and_resistance': lambda m: armor_and_resistance.armor_calculator(m, bot)
+            '/armor_and_resistance': lambda m: armor_and_resistance.armor_calculator(m, bot),
+            '/hero_chars': lambda m: hero_chars.register_hero_handlers(bot)(m)  # Исправляем имя команды
         }
 
         command = message.text.split()[0].lower()
