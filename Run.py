@@ -10,7 +10,8 @@ from handlers import (
     season_progress,
     rank,
     my_stars,
-    armor_and_resistance
+    armor_and_resistance,
+    menu
 )
 from handlers.command_handler import handle_commands
 
@@ -32,6 +33,7 @@ command_mapping = {
     'season_progress': season_progress.send_season_progress,
     'rank': rank.send_rank, 
     'my_stars': my_stars.send_my_stars,
+    'menu': menu.send_menu
 }
 
 # Регистрируем общий обработчик команд

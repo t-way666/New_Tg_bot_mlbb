@@ -56,29 +56,16 @@ def send_start(bot):
         try:
             user_first_name = message.from_user.first_name
 
-            # Создаем клавиатуру с основными командами
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            markup.row('/help', '/rank', '/my_stars')
-            markup.row('/winrate_correction', '/season_progress')
-            markup.row('/armor_and_resistance')
-
             # Приветственное сообщение
             greeting = (
                 f"👋 Привет, {user_first_name}!\n\n"
-                "Я помогу тебе с расчетами в Mobile Legends. "
-                "Вот доступные команды:\n\n"
-                "🎮 /rank - Определить ранг по звездам\n"
-                "⭐ /my_stars - Подсчет общего количества звезд\n"
-                "📊 /winrate_correction - Корректировка винрейта\n"
-                "📈 /season_progress - Сколько игр нужно сыграть для достижения желаемого ранга\n"
-                "🛡️ /armor_and_resistance - Калькулятор защиты и снижения урона\n"
-                "❓ /help - Помощь"
+                "Я бот помощник по Mobile Legends. \n"
+                "Используй команду /menu чтобы увидеть список доступных команд."
             )
 
             bot.send_message(
                 message.chat.id,
                 greeting,
-                reply_markup=markup,
                 parse_mode='HTML'
             )
 
