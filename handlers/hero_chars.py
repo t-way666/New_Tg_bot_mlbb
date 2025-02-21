@@ -4,6 +4,7 @@ from telebot import types
 import os
 import random
 import logging  # Добавляем импорт logging
+from handlers.command_handler import handle_commands
 
 # Настраиваем логирование
 logger = logging.getLogger(__name__)
@@ -217,7 +218,21 @@ def register_hero_handlers(bot: telebot.TeleBot):
 
     def process_hero_level(message, hero_name):
         try:
-            # Проверяем состояние пользователя
+            # Если получена новая команда
+            if message.text.startswith('/'):
+                # Очищаем состояние пользователя
+                if message.chat.id in user_states:
+                    del user_states[message.chat.id]
+                # Отменяем регистрацию следующего шага
+                bot.clear_step_handler_by_chat_id(message.chat.id)
+                # Убираем клавиатуру
+                markup = types.ReplyKeyboardRemove()
+                bot.send_message(message.chat.id, "Переключение на новую команду...", reply_markup=markup)
+                # Передаем управление обработчику команд
+                handle_commands(bot, message)
+                return
+
+            # Остальная логика обработки уровня героя
             if message.chat.id not in user_states or user_states[message.chat.id] != 'choosing_level':
                 return
 
@@ -233,8 +248,11 @@ def register_hero_handlers(bot: telebot.TeleBot):
                 bot.register_next_step_handler(msg, process_hero_level, hero_name)
                 return
             
-            # Отправляем информацию о герое напрямую
+            # Отправляем информацию о герое и очищаем состояние
             send_hero_info(bot, message.chat.id, hero_name, level)
+            # Очищаем состояние после успешной обработки
+            if message.chat.id in user_states:
+                del user_states[message.chat.id]
             
         except ValueError:
             markup = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True, one_time_keyboard=True)
