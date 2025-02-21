@@ -12,7 +12,8 @@ from handlers import (
     my_stars,
     armor_and_resistance,
     menu,
-    hero_chars
+    hero_chars,
+    chars_table
 )
 from handlers.command_handler import handle_commands
 
@@ -35,11 +36,13 @@ command_mapping = {
     'rank': rank.send_rank, 
     'my_stars': my_stars.send_my_stars,
     'menu': menu.send_menu,
-    'hero_chars': hero_chars.register_hero_handlers
+    'hero_chars': hero_chars.register_hero_handlers,
+    'chars_table': chars_table.register_handlers
 }
 
 # Регистрируем обработчики
 hero_chars.register_hero_handlers(bot)
+chars_table.register_handlers(bot)
 
 @bot.message_handler(commands=list(command_mapping.keys()))
 def handle_specific_commands(message):
