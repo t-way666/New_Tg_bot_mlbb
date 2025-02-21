@@ -4,7 +4,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class DBEditor:
-    def __init__(self, db_path='db/characters.db'):
+    def __init__(self, db_path='characters.db'):  # Убираем 'db/' из пути
         self.db_path = db_path
 
     def add_hero(self, hero_data):
@@ -91,7 +91,7 @@ class DBEditor:
             conn.close()
 
 # Пример использования:
-if __name__ == "__main__":
+if __name__ == "__main__": 
     db = DBEditor()
     
     # Добавление нового героя
