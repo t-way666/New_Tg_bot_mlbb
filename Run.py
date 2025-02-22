@@ -13,14 +13,21 @@ from handlers import (
     armor_and_resistance,
     menu,
     hero_chars,
-    chars_table
+    chars_table,
+    cybersport_info,
+    hero_greed,
+    hero_tiers,
+    search_teammates,
+    img_creator,
+    support,
+    video_guide_bot,
 )
 from handlers.command_handler import handle_commands
 
 # Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s'  # исправлено с "уровеньname" на "levelname"
 )
 logger = logging.getLogger(__name__)
 
@@ -37,26 +44,45 @@ command_mapping = {
     'my_stars': my_stars.send_my_stars,
     'menu': menu.send_menu,
     'hero_chars': hero_chars.register_hero_handlers,
-    'chars_table': chars_table.register_handlers
+    'chars_table': chars_table.register_handlers,
+    'cybersport_info': cybersport_info.register_cybersport_handlers,
+    'hero_greed': hero_greed.register_hero_greed_handlers,  # Исправлено имя функции
+    'hero_tiers': hero_tiers.register_hero_tiers_handlers,  # Исправлено имя функции
+    'search_teammates': search_teammates.register_handlers,
+    'video_guide': video_guide_bot.register_handlers,
+    'img_creator': img_creator.register_handlers,
+    'support': support.register_handlers,
 }
 
-# Регистрируем обработчики
-hero_chars.register_hero_handlers(bot)
-chars_table.register_handlers(bot)
+# Регистрация дополнительных обработчиков
+search_teammates.register_handlers(bot)
+img_creator.register_handlers(bot)
+support.register_handlers(bot)
+video_guide_bot.register_handlers(bot)
+armor_and_resistance.register_handlers(bot)
 
 @bot.message_handler(commands=list(command_mapping.keys()))
 def handle_specific_commands(message):
     """Обработчик для специфических команд"""
-    command = message.text.split()[0][1:].lower()
-    if command in command_mapping:
-        handler = command_mapping[command]
-        if command == 'hero_chars':
-            handler(bot)
-            return
-        handler(bot)(message)
-
-# Регистрируем armor_and_resistance отдельно
-armor_and_resistance.register_handlers(bot)
+    try:
+        command = message.text.split()[0][1:].lower()
+        if command in command_mapping:
+            handler = command_mapping[command]
+            # Прямой вызов обработчика для cybersport_info
+            if command == 'cybersport_info':
+                cybersport_info.register_cybersport_handlers(bot)(message)
+                return
+            # Для остальных команд с регистрацией обработчиков
+            if command in ['hero_chars', 'hero_tiers', 'hero_greed']:
+                result = handler(bot)
+                if result:
+                    result(message)
+                return
+            # Для простых команд
+            handler(bot)(message)
+    except Exception as e:
+        logger.error(f"Ошибка при обработке команды {command}: {e}")
+        bot.reply_to(message, "Произошла ошибка при обработке команды. Попробуйте позже.")
 
 @bot.message_handler(func=lambda message: message.text.startswith('/'))
 def prioritize_commands(message):

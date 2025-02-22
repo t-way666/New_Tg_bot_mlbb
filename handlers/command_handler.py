@@ -1,6 +1,16 @@
 from typing import Dict, Callable
 import logging
-from handlers import armor_and_resistance, hero_chars
+from handlers import (
+    armor_and_resistance, 
+    hero_chars, 
+    cybersport_info, 
+    hero_tiers,
+    hero_greed,  # Добавляем новый импорт
+    search_teammates,  # Добавляем новый импорт
+    video_guide_bot,  # Добавляем новый импорт
+    img_creator,  # Добавляем новый импорт
+    support  # Добавляем новый импорт
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,16 +41,19 @@ def handle_commands(bot, message):
                 "/armor_and_resistance\n"
                 "Калькулятор защиты и снижения урона\n"
                 "/hero\n"
-                "Информация о героях\n\n"
+                "Информация о героях\n"
+                "/cybersport_info\n"
+                "Информация о киберспортивной сцене MLBB\n"
+                "/hero_tiers\n"
+                "Тир-листы героев\n"
+                "/hero_greed\n"
+                "Рейтинг жадности героев\n\n"
                 
                 "Команды которые в разработке(пока не работают):\n"
                 "/help\n"
                 "/support\n"
                 "/guide\n"
-                "/cybersport_info\n"
                 "/chars_table\n"
-                "/hero_greed\n"
-                "/hero_tiers\n"
                 "/search_teammates\n"
                 "/img_creator\n"
             ),
@@ -50,7 +63,14 @@ def handle_commands(bot, message):
             '/winrate_correction': lambda m: bot.send_message(m.chat.id, "Используйте /menu для списка команд"),
             '/season_progress': lambda m: bot.send_message(m.chat.id, "Используйте /menu для списка команд"),
             '/armor_and_resistance': lambda m: armor_and_resistance.armor_calculator(m, bot),
-            '/hero_chars': lambda m: hero_chars.register_hero_handlers(bot)(m)  # Исправляем имя команды
+            '/hero_chars': lambda m: hero_chars.register_hero_handlers(bot)(m),
+            '/cybersport_info': lambda m: cybersport_info.register_cybersport_handlers(bot)(m),
+            '/hero_tiers': lambda m: hero_tiers.register_hero_tiers(bot)(m),
+            '/hero_greed': lambda m: hero_greed.register_hero_greed_handlers(bot)(m),  # Добавляем новый обработчик
+            '/search_teammates': lambda m: search_teammates.register_handlers(bot)(m),
+            '/video_guide': lambda m: video_guide_bot.register_handlers(bot)(m),
+            '/img_creator': lambda m: img_creator.register_handlers(bot)(m),
+            '/support': lambda m: support.register_handlers(bot)(m),
         }
 
         command = message.text.split()[0].lower()

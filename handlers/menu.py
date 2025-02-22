@@ -26,18 +26,22 @@ def send_menu(bot):
                 "Калькулятор защиты и снижения урона\n"
                 "/hero_chars\n"
                 "Информация о героях\n"
+                "/cybersport_info\n"
+                "Киберспортивная информация по Mobile Legends\n"
                 "/chars_table\n"
                 "Таблица характеристик героев\n\n"
-                
-                "Команды которые в разработке(пока не работают):\n"
-                "/help\n"
-                "/support\n"
-                "/guide\n"
-                "/cybersport_info\n"
-                "/hero_greed\n"
-                "/hero_tiers\n"
                 "/search_teammates\n"
+                "Поиск тиммейтов для игры\n"
+                "/video_guide\n"
+                "Видео-гайд по использованию бота\n"
                 "/img_creator\n"
+                "Создание изображений для профиля\n"
+                "/support\n"
+                "Поддержка и обратная связь\n\n"
+                
+                "Команды в разработке:\n"
+                "/help\n"
+                
             )
 
             bot.send_message(

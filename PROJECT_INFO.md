@@ -51,3 +51,20 @@
 ## Версионность
 - Версия: 1.0.0
 - Последнее обновление: Февраль 2025
+
+# Инструкция по добавлению новых функций в бота
+
+## 1. Создание нового обработчика
+
+1. Создайте новый файл в директории `handlers/` с именем вашей функции
+2. Используйте следующий базовый шаблон:
+
+```python
+from telebot.handler_backends import State, StatesGroup
+from telebot.types import Message
+
+def register_your_handler(bot):
+    @bot.message_handler(commands=['your_command'])
+    def your_command(message: Message):
+        # Ваш код здесь
+        pass
