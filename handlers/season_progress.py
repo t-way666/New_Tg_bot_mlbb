@@ -1,6 +1,6 @@
 from telebot import types
 import logging
-from config.constants import RANKS, MYTHICAL_RANKS, get_rank_and_level, get_total_stars_for_rank
+from config.constants import RANKS, MYTHIC_GRADES, get_rank_and_level, get_total_stars_for_rank
 
 # Настраиваем логирование
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def send_season_progress(bot):
             # Для текущего или целевого ранга показываем все
             ranks_to_show = RANKS
             # Добавим также кнопки для «мифических» подрангов (если нужно)
-            for threshold, rank_name in MYTHICAL_RANKS.items():
+            for threshold, rank_name in MYTHIC_GRADES.items():
                 if rank_name != "Мифический":
                     btn = types.InlineKeyboardButton(rank_name, callback_data=f"{step}::{rank_name}")
                     markup.add(btn)

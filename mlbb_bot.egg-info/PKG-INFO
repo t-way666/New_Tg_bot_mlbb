@@ -2,11 +2,8 @@ Metadata-Version: 2.2
 Name: mlbb_bot
 Version: 1.0
 Summary: Telegram бот для Mobile Legends: Bang Bang
-Author: Your Name
 Requires-Python: >=3.6
 Requires-Dist: pyTelegramBotAPI>=4.12.0
 Requires-Dist: python-dotenv>=1.0.0
 Requires-Dist: setuptools>=61.0
 Requires-Dist: wheel>=0.45.1
-Dynamic: author
-Dynamic: requires-python
