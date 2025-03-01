@@ -8,6 +8,8 @@ import pandas as pd
 import openpyxl
 from fpdf import FPDF
 import random
+import telebot
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -584,58 +586,129 @@ def create_excel_file(results, stat_name, level):
     return output
 
 def create_pdf_file(results, stat_name, level):
-    """Создание PDF файла с табличными данными"""
+    """Создание PDF файла с табличными данными - все герои на одной странице"""
     try:
+        # Используем fpdf2 вместо fpdf для лучшей поддержки Unicode
         from fpdf import FPDF
         import os
+        import io
+        import math
 
-        # Определяем путь к шрифтам
+        # Определяем путь к шрифтам в папке assets
         font_dir = os.path.join(os.path.dirname(__file__), '..', 'assets', 'fonts')
         
-        # Определяем доступные шрифты
-        available_fonts = {
-            'regular': os.path.join(font_dir, 'arial.ttf'),
-            'bold': os.path.join(font_dir, 'arialbd.ttf')
-        }
-
+        # Проверяем наличие шрифтов
+        font_files = os.listdir(font_dir) if os.path.exists(font_dir) else []
+        logger.info(f"Найденные шрифты: {font_files}")
+        
+        # Создаем PDF с поддержкой Unicode
         class PDF(FPDF):
             def __init__(self):
-                super().__init__()
-                self.add_font('CustomFont', '', available_fonts['regular'], uni=True)
-                self.add_font('CustomFont', 'B', available_fonts['bold'], uni=True)
-
+                super().__init__(orientation='P', unit='mm', format='A4')
+                # Устанавливаем автоматический разрыв страниц
+                self.set_auto_page_break(auto=True, margin=5)
+                
+            def header(self):
+                # Заголовок с логотипом MLBB
+                self.set_font('DejaVu', 'B', 12)
+                self.set_text_color(220, 50, 50)  # Красный цвет для заголовка
+                title = f"Рейтинг героев по '{stat_name}' на {level} уровне"
+                self.cell(0, 6, txt=title, ln=True, align='C')
+                
+            def footer(self):
+                # Нижний колонтитул
+                self.set_y(-7)
+                self.set_font('DejaVu', 'I', 6)
+                self.set_text_color(128, 128, 128)
+                self.cell(0, 5, 'MLBB Helper Bot', 0, 0, 'C')
+                
+        # Создаем PDF-документ
         pdf = PDF()
+        
+        # Добавляем шрифт DejaVu для поддержки кириллицы
+        dejavu_path = os.path.join(font_dir, 'DejaVuSansCondensed.ttf')
+        pdf.add_font('DejaVu', '', dejavu_path, uni=True)
+        pdf.add_font('DejaVu', 'B', os.path.join(font_dir, 'DejaVuSansCondensed-Bold.ttf'), uni=True)
+        pdf.add_font('DejaVu', 'I', os.path.join(font_dir, 'DejaVuSansCondensed-Oblique.ttf'), uni=True)
+        
         pdf.add_page()
         
-        # Используем наш кастомный шрифт
-        pdf.set_font("CustomFont", 'B', 14)
-
-        # Заголовок
-        title = f"Рейтинг героев по '{stat_name}' на {level} уровне"
-        pdf.cell(0, 10, txt=title, ln=True, align='C')
-        pdf.ln(10)
+        # Используем шрифт DejaVu с поддержкой Unicode, но меньшего размера
+        pdf.set_font('DejaVu', '', 6)  # Уменьшаем размер шрифта для компактности
         
-        # Настройка для таблицы
-        pdf.set_font('CustomFont', 'B', 12)
-        col_width = [15, 100, 40]
+        # Определяем количество колонок и строк для размещения всех героев
+        total_heroes = len(results)
+        columns = 3  # Используем 3 колонки для компактности
         
-        # Заголовки таблицы
-        pdf.cell(col_width[0], 10, '№', border=1)
-        pdf.cell(col_width[1], 10, 'Герой', border=1)
-        pdf.cell(col_width[2], 10, 'Значение', border=1)
-        pdf.ln()
+        # Вычисляем количество строк в каждой колонке
+        rows_per_column = math.ceil(total_heroes / columns)
         
-        # Данные таблицы
-        pdf.set_font('CustomFont', '', 12)
-        for idx, (hero, value) in enumerate(results, 1):
-            hero_name = format_hero_name(hero)
-            value_str = f"{round(float(value), 2):.2f}" if value is not None else "н/д"
+        # Определяем ширину колонок (A4 = 210mm ширина)
+        page_width = 210
+        margin = 5  # Уменьшаем отступы для большей компактности
+        usable_width = page_width - 2 * margin
+        column_width = usable_width / columns
+        
+        # Определяем ширину столбцов внутри колонки
+        num_width = 7
+        value_width = 18
+        hero_width = column_width - num_width - value_width
+        
+        # Настройка цветов для таблицы
+        header_color = (220, 50, 50)  # Красный для заголовка
+        row1_color = (240, 240, 240)  # Светло-серый для четных строк
+        row2_color = (255, 255, 255)  # Белый для нечетных строк
+        text_color = (0, 0, 0)  # Черный для текста
+        
+        # Высота строки
+        row_height = 4  # Уменьшаем высоту строки для компактности
+        
+        # Отступ сверху после заголовка
+        y_offset = 10
+        
+        # Рисуем таблицы по колонкам
+        for col in range(columns):
+            # Вычисляем x-координату для текущей колонки
+            x = margin + col * column_width
             
-            pdf.cell(col_width[0], 10, str(idx), border=1)
-            pdf.cell(col_width[1], 10, hero_name, border=1)
-            pdf.cell(col_width[2], 10, value_str, border=1)
-            pdf.ln()
+            # Заголовки таблицы
+            pdf.set_xy(x, y_offset)
+            pdf.set_fill_color(*header_color)
+            pdf.set_text_color(255, 255, 255)  # Белый текст для заголовка
+            pdf.cell(num_width, row_height, '№', 1, 0, 'C', True)
+            pdf.cell(hero_width, row_height, 'Герой', 1, 0, 'C', True)
+            pdf.cell(value_width, row_height, 'Значение', 1, 1, 'C', True)
+            
+            # Данные таблицы
+            pdf.set_text_color(*text_color)
+            
+            # Определяем диапазон индексов для текущей колонки
+            start_idx = col * rows_per_column
+            end_idx = min(start_idx + rows_per_column, total_heroes)
+            
+            for i in range(start_idx, end_idx):
+                idx = i + 1
+                hero, value = results[i]
+                
+                # Чередуем цвета строк
+                if idx % 2 == 0:
+                    pdf.set_fill_color(*row1_color)
+                else:
+                    pdf.set_fill_color(*row2_color)
+                
+                hero_name = format_hero_name(hero)
+                value_str = f"{round(float(value), 2):.2f}" if value is not None else "н/д"
+                
+                # Устанавливаем позицию для текущей строки
+                current_y = y_offset + row_height + (i - start_idx) * row_height
+                pdf.set_xy(x, current_y)
+                
+                # Рисуем ячейки
+                pdf.cell(num_width, row_height, str(idx), 1, 0, 'C', True)
+                pdf.cell(hero_width, row_height, hero_name, 1, 0, 'L', True)
+                pdf.cell(value_width, row_height, value_str, 1, 1, 'R', True)
         
+        # Сохраняем PDF в байтовый поток
         output = io.BytesIO()
         pdf.output(output)
         output.seek(0)
@@ -863,14 +936,27 @@ def send_excel_format(bot, message, results, stat_name, level):
     )
 
 def send_pdf_format(bot, message, results, stat_name, level):
-    """Отправка PDF файла"""
+    """Отправка PDF файла с данными"""
     try:
-        pdf_bytes = create_pdf_file(results, stat_name, level)
+        chat_id = message.chat.id
+        pdf_data = create_pdf_file(results, stat_name, level)
+        
+        # Создаем временное имя файла для отправки
+        filename = f"heroes_rating_{stat_name}_{level}.pdf"
+        
+        # Отправляем PDF как документ
         bot.send_document(
-            message.chat.id,
-            ('rating.pdf', pdf_bytes.getvalue()),
-            caption=f"📄 Рейтинг героев по '{stat_name}' на {level} уровне"
+            chat_id,
+            pdf_data,
+            caption=f"🏆 Рейтинг героев по '{stat_name}' на {level} уровне",
+            visible_file_name=filename
         )
+        
+        logger.info(f"PDF файл успешно отправлен пользователю {message.from_user.id}")
     except Exception as e:
         logger.error(f"Ошибка при отправке PDF: {e}")
-        bot.reply_to(message, "Произошла ошибка при создании PDF. Попробуйте другой формат.")
+        bot.reply_to(
+            message,
+            "Произошла ошибка при создании PDF. Попробуйте другой формат.",
+            reply_parameters=telebot.types.ReplyParameters(message_id=message.message_id)
+        )

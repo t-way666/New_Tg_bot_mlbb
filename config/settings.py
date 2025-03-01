@@ -6,6 +6,10 @@ from pathlib import Path
 current_file = Path(__file__)
 # Путь к директории config
 CONFIG_DIR = current_file.parent
+# Путь к корневой директории проекта
+ROOT_DIR = CONFIG_DIR.parent
+# Путь к директории media
+MEDIA_DIR = os.path.join(ROOT_DIR, 'media')
 # Путь к файлу .env
 ENV_PATH = CONFIG_DIR / '.env'
 
