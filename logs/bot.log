@@ -1,0 +1,233 @@
+2025-03-02 08:16:53,756 - INFO - Бот запущен
+2025-03-02 08:16:53,758 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:16:54,099 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getMe HTTP/1.1" 200 258
+2025-03-02 08:16:54,101 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:16:57,758 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 409 143
+2025-03-02 08:16:57,761 - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-03-02 08:16:57,763 - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+                               allowed_updates=allowed_updates,
+                               timeout=timeout, long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+        self.token, offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates,
+        long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+
+2025-03-02 08:17:01,732 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 409 143
+2025-03-02 08:17:01,734 - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-03-02 08:17:01,735 - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+                               allowed_updates=allowed_updates,
+                               timeout=timeout, long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+        self.token, offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates,
+        long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+
+2025-03-02 08:17:06,452 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 409 143
+2025-03-02 08:17:06,454 - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-03-02 08:17:06,455 - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+                               allowed_updates=allowed_updates,
+                               timeout=timeout, long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+        self.token, offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates,
+        long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+
+2025-03-02 08:17:12,757 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 409 143
+2025-03-02 08:17:12,758 - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-03-02 08:17:12,760 - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+                               allowed_updates=allowed_updates,
+                               timeout=timeout, long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+        self.token, offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates,
+        long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+
+2025-03-02 08:17:18,964 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 409 143
+2025-03-02 08:17:18,966 - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-03-02 08:17:18,968 - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+                               allowed_updates=allowed_updates,
+                               timeout=timeout, long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+        self.token, offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates,
+        long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+
+2025-03-02 08:17:31,174 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 409 143
+2025-03-02 08:17:31,175 - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-03-02 08:17:31,176 - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+                               allowed_updates=allowed_updates,
+                               timeout=timeout, long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+        self.token, offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates,
+        long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+
+2025-03-02 08:17:55,383 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 409 143
+2025-03-02 08:17:55,385 - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-03-02 08:17:55,387 - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 1234, in __threaded_polling
+    polling_thread.raise_exceptions()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 111, in raise_exceptions
+    raise self.exception_info
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+    ~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 688, in __retrieve_updates
+    updates = self.get_updates(offset=(self.last_update_id + 1),
+                               allowed_updates=allowed_updates,
+                               timeout=timeout, long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\__init__.py", line 660, in get_updates
+    json_updates = apihelper.get_updates(
+        self.token, offset=offset, limit=limit, timeout=timeout, allowed_updates=allowed_updates,
+        long_polling_timeout=long_polling_timeout)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 332, in get_updates
+    return _make_request(token, method_url, params=payload)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+  File "C:\Users\REPUBLIC OF GAMERS\PycharmProjects\New_Tg_bot_mlbb\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 409. Description: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+
+2025-03-02 08:18:23,983 - INFO - Бот запущен
+2025-03-02 08:18:23,985 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:18:24,294 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getMe HTTP/1.1" 200 258
+2025-03-02 08:18:24,296 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:18:44,599 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-03-02 08:20:48,692 - INFO - Бот запущен
+2025-03-02 08:20:48,694 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:20:49,031 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getMe HTTP/1.1" 200 258
+2025-03-02 08:20:49,033 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:21:09,331 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 23
+2025-03-02 08:21:14,591 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=1&timeout=20 HTTP/1.1" 200 390
+2025-03-02 08:21:14,592 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:21:14,965 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%D0%94%D0%B0%D0%B2%D0%B0%D0%B9%D1%82%D0%B5+%D0%BF%D0%BE%D1%81%D1%87%D0%B8%D1%82%D0%B0%D0%B5%D0%BC+%D0%B2%D0%B0%D1%88+%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B5%D1%81%D1%81+%D0%B2+%D1%81%D0%B5%D0%B7%D0%BE%D0%BD%D0%B5+%D0%B8+%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE+%D0%BC%D0%B0%D1%82%D1%87%D0%B5%D0%B9+%D0%BD%D1%83%D0%B6%D0%BD%D0%BE+%D0%B4%D0%BE+%D1%86%D0%B5%D0%BB%D0%B8.%0A%D0%A1+%D0%BA%D0%B0%D0%BA%D0%BE%D0%B3%D0%BE+%D1%80%D0%B0%D0%BD%D0%B3%D0%B0+%D0%B2%D1%8B+%D0%BD%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D0%BB%D0%B8+%D1%81%D0%B5%D0%B7%D0%BE%D0%BD%3F HTTP/1.1" 200 797
+2025-03-02 08:21:14,965 - ERROR - Ошибка в season_progress: string indices must be integers, not 'str'
+2025-03-02 08:21:15,084 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%D0%9F%D1%80%D0%BE%D0%B8%D0%B7%D0%BE%D1%88%D0%BB%D0%B0+%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B0.+%D0%9F%D0%BE%D0%BF%D1%80%D0%BE%D0%B1%D1%83%D0%B9%D1%82%D0%B5+%D0%BF%D0%BE%D0%B7%D0%B6%D0%B5.&reply_parameters=%7B%22message_id%22%3A+6074%7D HTTP/1.1" 200 799
+2025-03-02 08:21:32,157 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048587&timeout=20 HTTP/1.1" 200 390
+2025-03-02 08:21:32,294 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%D0%94%D0%B0%D0%B2%D0%B0%D0%B9%D1%82%D0%B5+%D0%BF%D0%BE%D1%81%D1%87%D0%B8%D1%82%D0%B0%D0%B5%D0%BC+%D0%B2%D0%B0%D1%88+%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B5%D1%81%D1%81+%D0%B2+%D1%81%D0%B5%D0%B7%D0%BE%D0%BD%D0%B5+%D0%B8+%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE+%D0%BC%D0%B0%D1%82%D1%87%D0%B5%D0%B9+%D0%BD%D1%83%D0%B6%D0%BD%D0%BE+%D0%B4%D0%BE+%D1%86%D0%B5%D0%BB%D0%B8.%0A%D0%A1+%D0%BA%D0%B0%D0%BA%D0%BE%D0%B3%D0%BE+%D1%80%D0%B0%D0%BD%D0%B3%D0%B0+%D0%B2%D1%8B+%D0%BD%D0%B0%D1%87%D0%B8%D0%BD%D0%B0%D0%BB%D0%B8+%D1%81%D0%B5%D0%B7%D0%BE%D0%BD%3F HTTP/1.1" 200 797
+2025-03-02 08:21:32,295 - ERROR - Ошибка в season_progress: string indices must be integers, not 'str'
+2025-03-02 08:21:32,410 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%D0%9F%D1%80%D0%BE%D0%B8%D0%B7%D0%BE%D1%88%D0%BB%D0%B0+%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B0.+%D0%9F%D0%BE%D0%BF%D1%80%D0%BE%D0%B1%D1%83%D0%B9%D1%82%D0%B5+%D0%BF%D0%BE%D0%B7%D0%B6%D0%B5.&reply_parameters=%7B%22message_id%22%3A+6077%7D HTTP/1.1" 200 799
+2025-03-02 08:21:36,017 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048588&timeout=20 HTTP/1.1" 200 391
+2025-03-02 08:21:36,021 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:21:36,348 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%0A%2A%F0%9F%94%8D+%D0%9F%D0%BE%D0%B8%D1%81%D0%BA+%D1%82%D0%B8%D0%BC%D0%BC%D0%B5%D0%B9%D1%82%D0%BE%D0%B2%2A%0A%0A%D0%92%D1%8B%D0%B1%D0%B5%D1%80%D0%B8%D1%82%D0%B5+%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D0%B5%3A%0A%E2%80%A2+%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D1%82%D1%8C+%D0%B0%D0%BD%D0%BA%D0%B5%D1%82%D1%83+%D0%B4%D0%BB%D1%8F+%D0%BF%D0%BE%D0%B8%D1%81%D0%BA%D0%B0%0A%E2%80%A2+%D0%9D%D0%B0%D0%B9%D1%82%D0%B8+%D0%B8%D0%B3%D1%80%D0%BE%D0%BA%D0%BE%D0%B2+%D0%BF%D0%BE+%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D0%B0%D0%BC%0A%0A_%D0%92+%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B5%3A+%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0+%D1%80%D0%B5%D0%B9%D1%82%D0%B8%D0%BD%D0%B3%D0%B0+%D0%B8%D0%B3%D1%80%D0%BE%D0%BA%D0%BE%D0%B2%2C+%D1%84%D0%B8%D0%BB%D1%8C%D1%82%D1%80%D1%8B+%D0%BF%D0%BE+%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8+%D0%B8%D0%B3%D1%80%D1%8B+%D0%B8+%D1%80%D0%B0%D0%BD%D0%B3%D1%83_%0A&reply_markup=%7B%22inline_keyboard%22%3A+%5B%5B%7B%22text%22%3A+%22%5Cu0421%5Cu043e%5Cu0437%5Cu0434%5Cu0430%5Cu0442%5Cu044c+%5Cu0430%5Cu043d%5Cu043a%5Cu0435%5Cu0442%5Cu0443%22%2C+%22callback_data%22%3A+%22create_profile%22%7D%2C+%7B%22text%22%3A+%22%5Cu041d%5Cu0430%5Cu0439%5Cu0442%5Cu0438+%5Cu0438%5Cu0433%5Cu0440%5Cu043e%5Cu043a%5Cu043e%5Cu0432%22%2C+%22callback_data%22%3A+%22find_players%22%7D%5D%5D%7D&parse_mode=Markdown HTTP/1.1" 200 1504
+2025-03-02 08:21:39,460 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048589&timeout=20 HTTP/1.1" 200 393
+2025-03-02 08:21:39,579 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%D0%92%D0%B2%D0%B5%D0%B4%D0%B8%D1%82%D0%B5+%D0%B2%D0%B0%D1%88+%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B8%D0%B9+%D0%B2%D0%B8%D0%BD%D1%80%D0%B5%D0%B9%D1%82%3A&reply_parameters=%7B%22message_id%22%3A+6082%7D HTTP/1.1" 200 765
+2025-03-02 08:21:43,722 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048590&timeout=20 HTTP/1.1" 200 393
+2025-03-02 08:21:43,849 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%D0%9E%D0%BF%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%8F+%D0%BF%D1%80%D0%B5%D1%80%D0%B2%D0%B0%D0%BD%D0%B0.+%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B9%D1%82%D0%B5+%2Fhelp+%D0%B4%D0%BB%D1%8F+%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0+%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4.&reply_parameters=%7B%22message_id%22%3A+6084%7D HTTP/1.1" 200 941
+2025-03-02 08:21:49,400 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048591&timeout=20 HTTP/1.1" 200 378
+2025-03-02 08:21:49,526 - DEBUG - https://api.telegram.org:443 "POST /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/sendMessage?chat_id=628418673&text=%0A%F0%9F%94%B9+FAQ+-+%D1%87%D0%B0%D1%81%D1%82%D1%8B%D0%B5+%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D1%8B++%0A%F0%9F%94%B9+%D0%92%D0%B8%D0%B4%D0%B5%D0%BE+%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D1%8F+%D0%BF%D0%BE+%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8E+%D0%B1%D0%BE%D1%82%D0%B0++%0A%0A%F0%9F%94%B9+SUPPORT+-+%D0%BF%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0++%0A++%E2%97%BD%EF%B8%8F+%5B%D0%9E%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C+%D0%BE%D1%82%D0%B7%D1%8B%D0%B2%5D%28https%3A%2F%2Ft.me%2FT_w_a_y%29++%0A++%E2%97%BD%EF%B8%8F+%5B%D0%A1%D0%BE%D0%BE%D0%B1%D1%89%D0%B8%D1%82%D1%8C+%D0%BE%D0%B1+%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B5%5D%28https%3A%2F%2Ft.me%2FT_w_a_y%29++%0A++%E2%97%BD%EF%B8%8F+%5B%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%82%D1%8C+%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%5D%28https%3A%2F%2Ft.me%2FT_w_a_y%29++%0A++%E2%97%BD%EF%B8%8F+%5B%D0%A1%D0%B2%D1%8F%D0%B7%D0%B0%D1%82%D1%8C%D1%81%D1%8F+%D1%81+%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA%D0%B0%D0%BC%D0%B8%5D%28https%3A%2F%2Ft.me%2FT_w_a_y%29++%0A&reply_parameters=%7B%22message_id%22%3A+6086%7D HTTP/1.1" 200 1827
+2025-03-02 08:22:09,502 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048592&timeout=20 HTTP/1.1" 200 23
+2025-03-02 08:22:29,603 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048592&timeout=20 HTTP/1.1" 200 23
+2025-03-02 08:22:29,604 - INFO - Переподключение...
+2025-03-02 08:22:29,605 - DEBUG - Starting new HTTPS connection (1): api.telegram.org:443
+2025-03-02 08:22:49,902 - DEBUG - https://api.telegram.org:443 "GET /bot7553144424:AAF-FPuq1boJjCk3pSRFr0VeU6i_RcmSMaY/getUpdates?offset=29048592&timeout=20 HTTP/1.1" 200 23

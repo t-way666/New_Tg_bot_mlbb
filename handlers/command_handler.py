@@ -6,6 +6,8 @@ from handlers import (
     hero_tiers,
     hero_greed,
     search_teammates,
+    chars_table,
+    damage_calculator,
 )
 
 logger = logging.getLogger(__name__)
@@ -22,6 +24,8 @@ COMMANDS = {
     'hero_greed': 'Грид героев',
     'hero_tiers': 'Тир-лист героев',
     'search_teammates': 'Поиск тиммейтов',
+    'armor_and_resistance': 'Калькулятор защиты и снижения урона',
+    'damage_calculator': 'Калькулятор урона с учетом всех модификаторов',
 }
 
 def handle_commands(bot, message):
@@ -51,12 +55,50 @@ def handle_commands(bot, message):
             '/rank_stars': lambda m: bot.send_message(m.chat.id, "Используйте /menu для списка команд"),
             '/winrate_correction': lambda m: bot.send_message(m.chat.id, "Используйте /menu для списка команд"),
             '/season_progress': lambda m: bot.send_message(m.chat.id, "Используйте /menu для списка команд"),
-            '/armor_and_resistance': lambda m: armor_and_resistance.armor_calculator(m, bot),
+            '/chars_table': lambda m: chars_table.register_handlers(bot)(m),
             '/hero_chars': lambda m: hero_chars.register_hero_handlers(bot)(m),
-            '/hero_tiers': lambda m: hero_tiers.register_hero_tiers(bot)(m),
+            '/hero_tiers': lambda m: hero_tiers.register_hero_tiers_handlers(bot)(m),
             '/hero_greed': lambda m: hero_greed.register_hero_greed_handlers(bot)(m),
             '/search_teammates': lambda m: search_teammates.register_handlers(bot)(m),
         }
+
+        # Специальная обработка для команды /armor_and_resistance
+        if command == '/armor_and_resistance':
+            logger.info(f"Специальная обработка команды /armor_and_resistance для пользователя {message.from_user.id}")
+            try:
+                # Отправляем простое сообщение для подтверждения получения команды
+                bot.send_message(message.chat.id, "Запускаю калькулятор защиты и снижения урона...")
+                logger.info(f"Отправлено подтверждающее сообщение пользователю {message.from_user.id}")
+                
+                # Вызываем функцию armor_calculator
+                armor_and_resistance.armor_calculator(message, bot)
+                logger.info(f"Функция armor_calculator успешно вызвана для пользователя {message.from_user.id}")
+            except Exception as e:
+                logger.error(f"Ошибка при обработке команды /armor_and_resistance: {e}")
+                bot.send_message(
+                    message.chat.id,
+                    "Произошла ошибка при запуске калькулятора защиты. Пожалуйста, попробуйте позже."
+                )
+            return
+            
+        # Специальная обработка для команды /damage_calculator
+        if command == '/damage_calculator':
+            logger.info(f"Специальная обработка команды /damage_calculator для пользователя {message.from_user.id}")
+            try:
+                # Отправляем простое сообщение для подтверждения получения команды
+                bot.send_message(message.chat.id, "Запускаю калькулятор урона...")
+                logger.info(f"Отправлено подтверждающее сообщение пользователю {message.from_user.id}")
+                
+                # Вызываем функцию damage_calculator
+                damage_calculator.damage_calc(message, bot)
+                logger.info(f"Функция damage_calc успешно вызвана для пользователя {message.from_user.id}")
+            except Exception as e:
+                logger.error(f"Ошибка при обработке команды /damage_calculator: {e}")
+                bot.send_message(
+                    message.chat.id,
+                    "Произошла ошибка при запуске калькулятора урона. Пожалуйста, попробуйте позже."
+                )
+            return
 
         handler = command_handlers.get(command)
 
@@ -101,6 +143,7 @@ def handle_menu_command(bot, message):
 ⚖️ /winrate_correction - Корректировка общего винрейта  
 📈 /season_progress - Сколько игр нужно сыграть для достижения желаемого ранга  
 🛡 /armor_and_resistance - Калькулятор защиты и снижения урона  
+💥 /damage_calculator - Калькулятор урона с учетом всех модификаторов  
 🦸 /hero_chars - Информация о героях  
 📊 /chars_table - Таблица характеристик героев  
 👥 /search_teammates - Поиск тиммейтов для игры  

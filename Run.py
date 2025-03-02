@@ -17,12 +17,15 @@ from handlers import (
     hero_greed,
     hero_tiers,
     search_teammates,
+    damage_calculator,
+    hero_stats,
 )
 
 # Настройка логирования
 logging.basicConfig(
     level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    encoding='utf-8'
 )
 logger = logging.getLogger(__name__)
 
@@ -30,69 +33,102 @@ logger = logging.getLogger(__name__)
 state_storage = StateMemoryStorage()
 bot = telebot.TeleBot(API_TOKEN, state_storage=state_storage)
 
-# Обработчик для сброса состояний при получении любой команды
-@bot.message_handler(func=lambda message: message.text and message.text.startswith('/'), is_priority=True)
-def reset_state_handler(message):
-    """Обработчик для сброса состояний при получении любой команды"""
-    try:
-        command = message.text.split()[0].lower()
-        logger.info(f"Получена команда {command} от пользователя {message.from_user.id}")
-        
-        # Сбрасываем состояние пользователя
-        try:
-            current_state = bot.get_state(message.from_user.id, message.chat.id)
-            if current_state:
-                logger.info(f"Сброс состояния пользователя {message.from_user.id} из состояния {current_state}")
-                bot.delete_state(message.from_user.id, message.chat.id)
-                logger.info(f"Состояние пользователя {message.from_user.id} успешно сброшено")
-        except Exception as state_error:
-            logger.error(f"Ошибка при сбросе состояния: {state_error}")
-    except Exception as e:
-        logger.error(f"Ошибка в обработчике сброса состояний: {e}")
-
 # Регистрация обработчиков команд
-start_handler = start.send_start(bot)
-help_handler = help.send_help(bot)
-menu_handler = menu.send_menu(bot)
-winrate_correction_handler = winrate_correction.send_winrate_correction(bot)
-season_progress_handler = season_progress.send_season_progress(bot)
-rank_stars_handler = rank_stars.send_rank_stars(bot)
-hero_chars_handler = hero_chars.register_hero_handlers(bot)
-chars_table_handler = chars_table.register_handlers(bot)
-hero_greed_handler = hero_greed.register_hero_greed_handlers(bot)
-hero_tiers_handler = hero_tiers.register_hero_tiers_handlers(bot)
+@bot.message_handler(commands=['start'])
+def start_command(message):
+    start.send_start(bot)(message)
 
-# Регистрация обработчиков состояний и callback-запросов
-search_teammates.register_handlers(bot)
-armor_and_resistance.register_handlers(bot)
+@bot.message_handler(commands=['help'])
+def help_command(message):
+    help.send_help(bot)(message)
 
-# Добавляем обработчик для отладки всех сообщений
-@bot.message_handler(func=lambda message: True, is_priority=False)
-def debug_all_messages(message):
-    """Обработчик для отладки всех сообщений"""
-    logger.debug(f"Получено сообщение: '{message.text}' от пользователя {message.from_user.id}")
-    # Не обрабатываем сообщение, просто логируем
+@bot.message_handler(commands=['menu'])
+def menu_command(message):
+    menu.send_menu(bot)(message)
 
-# Добавляем обработчик для отладки всех callback-запросов
-@bot.callback_query_handler(func=lambda call: True, is_priority=False)
-def debug_all_callbacks(call):
-    """Обработчик для отладки всех callback-запросов"""
-    logger.debug(f"Получен callback: '{call.data}' от пользователя {call.from_user.id}")
-    # Не обрабатываем callback, просто логируем
+@bot.message_handler(commands=['winrate_correction'])
+def winrate_correction_command(message):
+    winrate_correction.send_winrate_correction(bot)(message)
 
+@bot.message_handler(commands=['season_progress'])
+def season_progress_command(message):
+    season_progress.send_season_progress(bot)(message)
+
+@bot.message_handler(commands=['rank_stars'])
+def rank_stars_command(message):
+    rank_stars.send_rank_stars(bot)(message)
+
+@bot.message_handler(commands=['armor_and_resistance'])
+def armor_and_resistance_command(message):
+    try:
+        logger.info(f"Вызов команды /armor_and_resistance для пользователя {message.from_user.id}")
+        # Отправляем простое сообщение для подтверждения получения команды
+        bot.send_message(message.chat.id, "Запускаю калькулятор защиты и снижения урона...")
+        # Вызываем функцию armor_calculator
+        armor_and_resistance.armor_calculator(message, bot)
+    except Exception as e:
+        logger.error(f"Ошибка при обработке команды /armor_and_resistance: {e}")
+        bot.send_message(message.chat.id, "Произошла ошибка в калькуляторе защиты. Пожалуйста, попробуйте позже.")
+
+@bot.message_handler(commands=['damage_calculator'])
+def damage_calculator_command(message):
+    try:
+        logger.info(f"Вызов команды /damage_calculator для пользователя {message.from_user.id}")
+        # Отправляем простое сообщение для подтверждения получения команды
+        bot.send_message(message.chat.id, "Запускаю калькулятор урона...")
+        # Вызываем функцию damage_calc
+        damage_calculator.damage_calc(message, bot)
+    except Exception as e:
+        logger.error(f"Ошибка при обработке команды /damage_calculator: {e}")
+        bot.send_message(message.chat.id, "Произошла ошибка в калькуляторе урона. Пожалуйста, попробуйте позже.")
+
+@bot.message_handler(commands=['hero_chars'])
+def hero_chars_command(message):
+    hero_chars.register_hero_handlers(bot)(message)
+
+@bot.message_handler(commands=['chars_table'])
+def chars_table_command(message):
+    chars_table.register_handlers(bot)(message)
+
+@bot.message_handler(commands=['hero_greed'])
+def hero_greed_command(message):
+    hero_greed.register_hero_greed_handlers(bot)(message)
+
+@bot.message_handler(commands=['hero_tiers'])
+def hero_tiers_command(message):
+    hero_tiers.register_hero_tiers_handlers(bot)(message)
+
+@bot.message_handler(commands=['search_teammates'])
+def search_teammates_command(message):
+    search_teammates.register_search_teammates_handlers(bot)(message)
+
+@bot.message_handler(commands=['hero_stats'])
+def hero_stats_command(message):
+    hero_stats.register_hero_stats_handlers(bot)(message)
+
+# Регистрация обработчиков для команд /heroes_list и /compare_heroes
+# происходит внутри функции register_hero_stats_handlers
+
+# Обработчик для всех остальных сообщений
+@bot.message_handler(func=lambda message: True)
+def handle_all_messages(message):
+    handle_commands(message, bot)
+
+# Функция для запуска бота с обработкой ошибок
 def run_bot():
-    """Запуск бота с обработкой ошибок"""
     while True:
         try:
-            logger.info("Бот запущен")
-            bot.polling(none_stop=True, timeout=60)
-        except (ConnectionError, ReadTimeout) as e:
+            logger.info("Запуск бота...")
+            bot.polling(none_stop=True, interval=1)
+        except ConnectionError as e:
             logger.error(f"Ошибка соединения: {e}")
+            time.sleep(15)
+        except ReadTimeout as e:
+            logger.error(f"Таймаут чтения: {e}")
             time.sleep(15)
         except Exception as e:
             logger.error(f"Необработанная ошибка: {e}")
             time.sleep(15)
-        logger.info("Переподключение...")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_bot()
